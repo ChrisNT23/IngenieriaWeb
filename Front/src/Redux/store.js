@@ -14,7 +14,6 @@ const rootReducer = combineReducers({
     userUpdateProfile : User.userUpdateProfileReducer,
     userDeleteProfile : User.userDeleteProfileReducer,
     userchangepassword : User.userChangePasswordReducer, 
-    userchangepassword : User.userChangePasswordReducer,
     userGetFavoriteMovies : User.userGetFavoriteMoviesReducer, 
     userDeleteFavoriteMovies : User.userDeleteFavoriteMoviesReducer,
     adminGetAllUsers : User.adminGetAllUsersReducer, 
@@ -27,8 +26,11 @@ const rootReducer = combineReducers({
     categoryDelete : categories.deleteCategoryReducer, 
 
     // reducers para las peliculas
-    getAllMovies : movies.moviesListReducer, 
-    
+    getAllMovies: movies.moviesListReducer,
+    getRandomMovies: movies.moviesRandomReducer,
+    getMovieById: movies.movieDetailsReducer,
+    getTopRatedMovie: movies.movieTopRatedReducer,
+
 
 });
 

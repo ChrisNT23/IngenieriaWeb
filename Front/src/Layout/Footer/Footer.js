@@ -25,7 +25,7 @@ function Footer() {
       ],
     },
     {
-      title: 'Top Categories',
+      title: 'Categorías Top',
       links: [
         {
           name: 'Acción',

@@ -35,7 +35,7 @@ const getMovies = asyncHandler(async (req, res) => {
 
         //funcionalidad para cargar mas peliculas
         const page = Number(req.query.pageNumber) || 1;  // si es que la pageNumber no es proveida por la quey la seteAMOA a 1
-        const limit = 2;  //significa 2 peliculas por pagina
+        const limit = 12;  //significa 2 peliculas por pagina
         const skip = (page - 1) * limit; // skip 2 peliculas por pagina
 
         //encontrar peliculas por query, skip y por limite

@@ -19,7 +19,6 @@ const getCategories = asyncHandler(async (req, res) => {
 });
 
 
-
 /******************CONTROLADORES PRIVADOS**********************/
 
 // @desc crear nueva categoria
@@ -41,7 +40,6 @@ const createCategory = asyncHandler(async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 });
-
 
 
 // @desc actualizar categoria
