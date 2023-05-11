@@ -45,7 +45,7 @@ function App() {
 
     }
     if (isError || catError){
-      toast.error("Algo salió mal!, :(" );
+      toast.error(isError || catError );
       dispatch( {type: "LIKE_MOVIE_RESET"});  
     }
     if(isSuccess) {
