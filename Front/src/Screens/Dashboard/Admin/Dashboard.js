@@ -3,62 +3,69 @@ import { FaRegListAlt, FaUser } from "react-icons/fa";
 import SideBar from "../SideBar";
 import { HiViewGridAdd } from "react-icons/hi";
 import Table from "../../../Components/Table";
-import { Movies } from "../../../Data/MovieData";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-hot-toast";
 import { getAllUsersAction } from "../../../Redux/Actions/userActions";
-import { getAllMoviesAction } from "../../../Redux/Actions/MoviesActions";
-import { getAllCategoriesAction } from "../../../Redux/Actions/CategoriesActions";
+import toast from "react-hot-toast";
+import { Empty } from "../../../Components/Notifications/Empty";
+import Loader from "../../../Components/Notifications/Loader";
+import { deleteMovieAction } from "../../../Redux/Actions/MoviesActions";
 
 function Dashboard() {
   const dispatch = useDispatch();
-    // useSelectors
-    const {
-      isLoading: catLoading,
-      isError: catError,
-      categories,
-    } = useSelector((state) => state.categoryGetAll);
-    const {
-      isLoading: userLoading,
-      isError: userError,
-      users,
-    } = useSelector((state) => state.adminGetAllUsers);
-    const { isLoading, isError, movies, totalMovies } = useSelector(
-      (state) => state.getAllMovies
-    );
-  
-    // useEffect
-    useEffect(() => {
-      // obtenemos todos los usuarios
-      dispatch(getAllUsersAction());
-      // get all movies
-      dispatch(getAllMoviesAction({}));
-      // obtenemos todas las categorias 
-      dispatch(getAllCategoriesAction());
-      // errors
-      if (isError || catError || userError) {
-        toast.error("Algo salió mal!");
-      }
-    }, [dispatch, isError, catError, userError]);
+  // useSelectors
+  const {
+    isLoading: catLoading,
+    isError: catError,
+    categories,
+  } = useSelector((state) => state.categoryGetAll);
+  const {
+    isLoading: userLoading,
+    isError: userError,
+    users,
+  } = useSelector((state) => state.adminGetAllUsers);
+  const { isLoading, isError, movies, totalMovies } = useSelector(
+    (state) => state.getAllMovies
+  );
+  // delete
+  const { isLoading: deleteLoading, isError: deleteError } = useSelector(
+    (state) => state.deleteMovie
+  );
 
+  // delete movie handler
+  const deleteMovieHandler = (id) => {
+    window.confirm("Are you sure you want do delete this movie?") &&
+      dispatch(deleteMovieAction(id));
+  };
+
+  // useEffect
+  useEffect(() => {
+    // get all users
+    dispatch(getAllUsersAction());
+    // errors
+    if (isError || catError || userError || deleteError) {
+      toast.error("Something went wrong!");
+    }
+  }, [dispatch, isError, catError, userError, deleteError]);
+
+  // dashboard datas
   const DashboardData = [
     {
       bg: "bg-orange-600",
       icon: FaRegListAlt,
       title: "Total Movies",
-      total: isLoading ? "Cargando..." : totalMovies || 0, 
+      total: isLoading ? "Loading..." : totalMovies || 0,
     },
     {
       bg: "bg-blue-700",
       icon: HiViewGridAdd,
       title: "Total Categories",
-      total: catLoading ? "Cargando..." : categories?.length || 0, 
+      total: catLoading ? "Loading..." : categories?.length || 0,
     },
     {
       bg: "bg-green-600",
       icon: FaUser,
       title: "Total Users",
-      total: userLoading ? "Cargando..." : users?.length || 0,   
+      total: userLoading ? "Loading.." : users?.length || 0,
     },
   ];
   return (
@@ -82,8 +89,18 @@ function Dashboard() {
           </div>
         ))}
       </div>
-      <h3 className="text-md font-medium my-6 text-border">Peliculas Recientes</h3>
-      <Table data={Movies.slice(0, 5)} admin={true} />
+      <h3 className="text-md font-medium my-6 text-border">Recent Movies</h3>
+      {isLoading || deleteLoading ? (
+        <Loader />
+      ) : movies.length > 0 ? (
+        <Table
+          data={movies?.slice(0, 5)}
+          admin={true}
+          onDeleteHandler={deleteMovieHandler}
+        />
+      ) : (
+        <Empty message="Empty" />
+      )}
     </SideBar>
   );
 }

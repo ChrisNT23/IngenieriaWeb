@@ -103,3 +103,40 @@ async (dispatch, getState) => {
     ErrorsAction(error, dispatch, moviesConstants.CREATE_REVIEW_FAIL);
   }
 };
+
+// Accion para eliminar una pelicula
+export const deleteMovieAction = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: moviesConstants.DELETE_MOVIE_REQUEST });
+    const response = await moviesAPIs.deleteMovieService(
+      tokenProtection(getState),
+      id
+    );
+    dispatch({
+      type: moviesConstants.DELETE_MOVIE_SUCCESS,
+      payload: response,
+    });
+    toast.success("La película fue eliminada con éxito");
+    dispatch(getAllMoviesAction({}));
+  } catch (error) {
+    ErrorsAction(error, dispatch, moviesConstants.DELETE_MOVIE_FAIL);
+  }
+};
+
+// Accion para elimianr todas las peliculas
+export const deleteAllMoviesAction = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: moviesConstants.DELETE_ALL_MOVIES_REQUEST });
+    const response = await moviesAPIs.deleteAllMoviesService(
+      tokenProtection(getState)
+    );
+    dispatch({
+      type: moviesConstants.DELETE_ALL_MOVIES_SUCCESS,
+      payload: response,
+    });
+    toast.success("Todas las películas han sido eliminadas con éxito");
+    dispatch(getAllMoviesAction({}));
+  } catch (error) {
+    ErrorsAction(error, dispatch, moviesConstants.DELETE_ALL_MOVIES_FAIL);
+  }
+};
