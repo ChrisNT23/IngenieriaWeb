@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getMovieByIdAction } from "../Redux/Actions/MoviesActions";
 import Loader from "../Components/Notifications/Loader";
 import { RiMovie2Line } from "react-icons/ri";
+import { IfMovieLiked, LikeMovie } from "../Context/Functionalities";
 
 function WatchPage() {
   let { id } = useParams();
@@ -17,6 +18,14 @@ function WatchPage() {
   const { isLoading, isError, movie } = useSelector(
     (state) => state.getMovieById
   );
+
+  const { isLoading: likeLoading } = useSelector((state) => state.userLikeMovie);
+  const { userInfo } = useSelector((state) => state.userLogin);
+
+  // creamos una funcion para las peliculas likeadas
+  const isLiked = (movie) => IfMovieLiked(movie);
+  
+
 
   // use Effect
   useEffect(() => {
@@ -29,7 +38,7 @@ function WatchPage() {
   return (
     <Layout>
       <div className="container mx-auto bg-dry p-6 mb-12">
-        
+
         <div className="flex-btn flex-wrap mb-6 gap-2 bg-main rounded border border-gray-800 p-6">
           <Link
             to={`/movie/${movie?._id}`}
@@ -38,7 +47,14 @@ function WatchPage() {
             <BiArrowBack /> {movie?.name}
           </Link>
           <div className="flex-btn sm:w-auto w-full gap-5">
-            <button className="bg-white hover:text-subMain transitions bg-opacity-30 text-white rounded px-4 py-3 text-sm">
+            <button 
+                 onClick={() => LikeMovie(movie, dispatch, userInfo)}
+                 disabled={isLiked(movie) || likeLoading}
+            className={`bg-white hover:text-subMain 
+            ${
+              isLiked(movie) ? "text-subMain" : "text-whote"
+            }
+            transitions bg-opacity-30 rounded px-4 py-3 text-sm`}>
               <FaHeart />
             </button>
             <button className="bg-subMain flex-rows gap-2 hover:text-main transitions text-white rounded px-8 font-medium py-3 text-sm">
@@ -75,11 +91,11 @@ function WatchPage() {
                     </p>
                   </div>
                 )
-                : (
-                  <>
-                  
-                  </>
-                )
+                  : (
+                    <>
+
+                    </>
+                  )
             }
             <div className="absolute top-0 left-0 bottom-0 right-0 bg-main bg-opacity-30 flex-colo">
               <button

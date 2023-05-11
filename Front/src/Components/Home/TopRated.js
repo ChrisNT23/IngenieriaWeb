@@ -16,14 +16,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { IfMovieLiked, LikeMovie } from "../../Context/Functionalities";
 
 const SwiperTop = ({ prevEl, nextEl, movies }) => {
-  // const { isLoading } = useSelector((state) => state.userLikeMovie);
-  // const dispatch = useDispatch();
-  // const { userInfo } = useSelector((state) => state.userLogin);
+  const { isLoading } = useSelector((state) => state.userLikeMovie);
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.userLogin);
 
-  // // if liked function
-  // const isLiked = (movie) => {
-  //   return IfMovieLiked(movie);
-  // };
+  // creamos una funcion para las peliculas likeadas
+  const isLiked = (movie) => {
+    return IfMovieLiked(movie);
+  };
+
   return (
     <Swiper
       navigation={{ nextEl, prevEl }}
@@ -59,7 +60,18 @@ const SwiperTop = ({ prevEl, nextEl, movies }) => {
               className="w-full h-full object-cover rounded-lg"
             />
             <div className="px-4 hoveres gap-6 text-center absolute bg-black bg-opacity-70 top-0 left-0 right-0 bottom-0">
-              
+              <button
+              onClick= {() => LikeMovie(movie, dispatch, userInfo)}
+              disabled= {isLiked(movie) || isLoading}
+              className= {`w-12 h-12 flex-colo transitions
+              ${
+                isLiked(movie) ? "bg-subMain" : "bg-white bg-opacity-30"
+              }
+              hover:bg-subMain rounded-full text-white`}>
+                    <FaHeart/>
+              </button>
+
+
               <Link
                 className="font-semibold text-xl trancuted line-clamp-2"
                 to={`/movie/${movie?._id}`}

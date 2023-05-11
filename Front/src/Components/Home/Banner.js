@@ -1,15 +1,28 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Autoplay } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import FlexMovieItems from '../FlexMovieItems';
-import { FaHeart } from 'react-icons/fa';
-import Loader from '../Notifications/Loader';
-import { RiMovie2Line } from 'react-icons/ri';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Autoplay } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
+import FlexMovieItems from "../FlexMovieItems";
+import { FaHeart } from "react-icons/fa";
+import Loader from "../Notifications/Loader";
+import { RiMovie2Line } from "react-icons/ri";
+import { useDispatch, useSelector } from "react-redux";
+import { IfMovieLiked, LikeMovie } from "../../Context/Functionalities";
 
 /*La funcion Swiper me permite que las peliculas se pasen solitas*/
 
 const Swipper = ({sameClass, movies}) => {
+  const {isLoading} = useSelector((state) => state.userLikeMovie);
+  const dispatch  = useDispatch();
+  const {userInfo } = useSelector((state) => state.userLogin);
+
+  // creamos una funcion para las peliculas likeadas
+  const isLiked  = (movie) => {
+    return IfMovieLiked(movie);
+  }; 
+
+
+
   return (
     <Swiper
       direction="vertical"
@@ -41,7 +54,12 @@ const Swipper = ({sameClass, movies}) => {
               >
                 Ver
               </Link>
-              <button className="bg-white hover:text-subMain transitions text-white px-4 py-3 rounded text-sm bg-opacity-30">
+              <button 
+              onClick= {() => LikeMovie(movie, dispatch, userInfo)}
+              disabled= {isLiked(movie) || isLoading}
+              className={`bg-white
+              ${isLiked(movie) ? "text-subMain" : "text-white"}
+               hover:text-subMain transitions  px-4 py-3 rounded text-sm bg-opacity-30`} >
                 <FaHeart />
               </button>
             </div>

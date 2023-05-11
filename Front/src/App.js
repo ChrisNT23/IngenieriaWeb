@@ -1,39 +1,58 @@
-import Aos from 'aos';
-import React from 'react';
-import { Route, Routes } from 'react-router-dom';
-import ScrollOnTop from './ScrollOnTop';
-import AboutUs from './Screens/AboutUs';
-import ContactUs from './Screens/ContactUs';
-import AddMovie from './Screens/Dashboard/Admin/AddMovie';
-import Categories from './Screens/Dashboard/Admin/Categories';
-import Dashboard from './Screens/Dashboard/Admin/Dashboard';
-import MoviesList from './Screens/Dashboard/Admin/MovieList';
-import Users from './Screens/Dashboard/Admin/Users';
-import FavoritesMovies from './Screens/Dashboard/FavoritesMovies';
-import Password from './Screens/Dashboard/Password';
-import Profile from './Screens/Dashboard/Profile';
-import HomeScreen from './Screens/HomeScreen';
-import Login from './Screens/Login';
-import MoviesPage from './Screens/Movies';
-import NotFound from './Screens/NotFound';
-import Register from './Screens/Register';
-import SingleMovie from './Screens/SingleMovie';
-import WatchPage from './Screens/WatchPage';
-import DrawerContext from './Context/DrawerContext';
-import ToastContainer from './Components/Notifications/ToastContainer';
-import { AdminProtectedRouter, ProtectedRouter } from './ProtectedRouter';
-import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { getAllCategoriesAction } from './Redux/Actions/CategoriesActions';
-import { getAllMoviesAction } from './Redux/Actions/MoviesActions';
+import Aos from "aos";
+import React, { useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
+import ScrollOnTop from "./ScrollOnTop";
+import AboutUs from "./Screens/AboutUs";
+import ContactUs from "./Screens/ContactUs";
+import AddMovie from "./Screens/Dashboard/Admin/AddMovie";
+import Categories from "./Screens/Dashboard/Admin/Categories";
+import Dashboard from "./Screens/Dashboard/Admin/Dashboard";
+import MoviesList from "./Screens/Dashboard/Admin/MovieList";
+import Users from "./Screens/Dashboard/Admin/Users";
+import FavoritesMovies from "./Screens/Dashboard/FavoritesMovies";
+import Password from "./Screens/Dashboard/Password";
+import Profile from "./Screens/Dashboard/Profile";
+import HomeScreen from "./Screens/HomeScreen";
+import Login from "./Screens/Login";
+import MoviesPage from "./Screens/Movies";
+import NotFound from "./Screens/NotFound";
+import Register from "./Screens/Register";
+import SingleMovie from "./Screens/SingleMovie";
+import WatchPage from "./Screens/WatchPage";
+import DrawerContext from "./Context/DrawerContext";
+import ToastContainer from "./Components/Notifications/ToastContainer";
+import { AdminProtectedRouter, ProtectedRouter } from "./ProtectedRouter";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCategoriesAction } from "./Redux/Actions/CategoriesActions";
+import { getAllMoviesAction } from "./Redux/Actions/MoviesActions";
+import { getFavoriteMoviesAction } from "./Redux/Actions/userActions";
+import toast from "react-hot-toast";
+//import EditMovie from "./Screens/Dashboard/Admin/EditMovie";
 
 function App() {
   Aos.init();
   const dispatch = useDispatch();
+  const {userInfo } = useSelector((state) => state.userLogin);
+  const {isError, isSuccess} = useSelector((state) => state.userLikeMovie);
+  const {isError : catError} = useSelector((state) => state.categoryGetAll);
+
+ 
   useEffect(()=> {
     dispatch(getAllCategoriesAction());
     dispatch(getAllMoviesAction({}));
-    }, [dispatch]);
+    if (userInfo) {
+      dispatch(getFavoriteMoviesAction());
+
+    }
+    if (isError || catError){
+      toast.error("Algo salió mal!, :(" );
+      dispatch( {type: "LIKE_MOVIE_RESET"});  
+    }
+    if(isSuccess) {
+      dispatch ( {type: "LIKE_MOVIE_RESET"});  
+    }
+
+    }, [dispatch, userInfo, isError, catError, isSuccess]);
 
     
   return (

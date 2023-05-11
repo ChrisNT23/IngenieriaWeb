@@ -160,7 +160,28 @@ const deleteUserAction =(id) => async (dispatch, getState) => {
     }
 };
 
+// Accion para que el usuario pueda likear una pelcula
+const likeMovieAction = (movieId) => async (dispatch, getState) => {
+    try {
+      dispatch({ type: userConstants.LIKE_MOVIE_REQUEST });
+      const response = await userApi.likeMovieService(
+        movieId,
+        tokenProtection(getState)
+      );
+      dispatch({
+        type: userConstants.LIKE_MOVIE_SUCCESS,
+        payload: response,
+      });
+      toast.success("Added to your favorites");
+      dispatch(getFavoriteMoviesAction());
+    } catch (error) {
+      ErrorsAction(error, dispatch, userConstants.LIKE_MOVIE_FAIL);
+    }
+  };
 
+
+
+  //Exportamos los metodos que se realizaron arriba
 export {
     loginAction,
     registerAction,
@@ -172,4 +193,5 @@ export {
     deleteFavoriteMoviesAction,
     getAllUsersAction, 
     deleteUserAction,
+    likeMovieAction, 
 };

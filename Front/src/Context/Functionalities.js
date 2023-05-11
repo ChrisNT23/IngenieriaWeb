@@ -1,27 +1,30 @@
-// import toast from "react-hot-toast";
-// import { useSelector } from "react-redux";
-// import { likeMovieAction } from "../Redux/Actions/userActions";
-// import { IoMdCloudDownload } from "react-icons/io";
-// import Axios from "../Redux/APIs/Axios";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { likeMovieAction } from "../Redux/Actions/userActions";
+import { IoMdCloudDownload } from "react-icons/io";
+import Axios from "../Redux/APIs/Axios";
 
-// // check if movie is added to favorites
-// const IfMovieLiked = (movie) => {
-//   const { likedMovies } = useSelector((state) => state.userGetFavoriteMovies);
-//   return likedMovies?.find((likedMovie) => likedMovie?._id === movie?._id);
-// };
 
-// // like movie functionalty
-// const LikeMovie = (movie, dispatch, userInfo) => {
-//   return !userInfo
-//     ? toast.error("Please Login to add to favorites")
-//     : dispatch(
-//         likeMovieAction({
-//           movieId: movie._id,
-//         })
-//       );
-// };
+// Se chequea si la pelicula esta añadida a las favoritas
+const IfMovieLiked = (movie) => {
+  const { likedMovies } = useSelector((state) => state.userGetFavoriteMovies);
+  return likedMovies?.find((likedMovie) => likedMovie?._id === movie?._id);
+};
 
-// // download video url functionalty
+// Esta es la funcionalidad para dar like a las peliculas en el icono
+const LikeMovie = (movie, dispatch, userInfo) => {
+  return !userInfo
+    ? toast.error("Se debe registrar para poder añadir peliculas como favoritas")
+    : dispatch(
+        likeMovieAction({
+          movieId: movie._id,
+        })
+      );
+};
+
+// Fncionalidad para descargar el video 
+// Opcional 
+// No hace falta 
 // const DownloadVideo = async (videoUrl, setProgress) => {
 //   const { data } = await Axios({
 //     url: videoUrl,
@@ -53,4 +56,4 @@
 //   return data;
 // };
 
-// export { IfMovieLiked, LikeMovie, DownloadVideo };
+export { IfMovieLiked, LikeMovie, }; //DownloadVideo 
