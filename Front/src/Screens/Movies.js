@@ -130,7 +130,7 @@ function MoviesPage() {
               <RiMovie2Line />
             </div>
             <p className="text-border text-sm">
-              It seem's like we dont have any movie
+              Parece que no hay peliculas
             </p>
           </div>
         )}

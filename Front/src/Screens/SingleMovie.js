@@ -66,7 +66,7 @@ function SingleMovie() {
                 {/* related */}
                 {
                   RelatedMovies?.length > 0 && (<div className="my-16">
-                    <Titles title="Related Movies" Icon={BsCollectionFill} />
+                    <Titles title="Películas Relacionadas" Icon={BsCollectionFill} />
                     <div className="grid sm:mt-10 mt-6 xl:grid-cols-4 2xl:grid-cols-5 lg:grid-cols-3 sm:grid-cols-2 gap-6">
                       {RelatedMovies?.map((movie, index) => (
                         <Movie key={movie?._id} movie={movie} />

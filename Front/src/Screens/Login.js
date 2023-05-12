@@ -35,19 +35,19 @@ function Login() {
   };
 
   // useEffect 
-  useEffect(()=> {
+  useEffect(() => {
     if (userInfo?.isAdmin) {
       navigate("/dashboard");
     }
-    else if (userInfo){
+    else if (userInfo) {
       navigate("/profile");
     }
-    if(isSuccess) {
+    if (isSuccess) {
       toast.success(`Bienvenido de vuelta ${userInfo?.fullName}`);
     }
     if (isError) {
       toast.error(isError);
-      dispatch({type: "USER_LOGIN_RESET"});
+      dispatch({ type: "USER_LOGIN_RESET" });
     }
   }, [userInfo, isSuccess, isError, navigate, dispatch]);
 
@@ -97,7 +97,7 @@ function Login() {
             {
               // si esta cargando
               isLoading ? (
-                "Loading:..."
+                "Cargando:..."
               ) : (
                 <>
                   <FiLogIn /> Iniciar Sesión

@@ -43,7 +43,7 @@ function Dashboard() {
     dispatch(getAllUsersAction());
     // errors
     if (isError || catError || userError || deleteError) {
-      toast.error("Something went wrong!");
+      toast.error("Algo salió mal!");
     }
   }, [dispatch, isError, catError, userError, deleteError]);
 
@@ -52,20 +52,20 @@ function Dashboard() {
     {
       bg: "bg-orange-600",
       icon: FaRegListAlt,
-      title: "Total Movies",
-      total: isLoading ? "Loading..." : totalMovies || 0,
+      title: "Total de películas",
+      total: isLoading ? "Cargando..." : totalMovies || 0,
     },
     {
       bg: "bg-blue-700",
       icon: HiViewGridAdd,
-      title: "Total Categories",
-      total: catLoading ? "Loading..." : categories?.length || 0,
+      title: "Total Categorías",
+      total: catLoading ? "Cargando..." : categories?.length || 0,
     },
     {
       bg: "bg-green-600",
       icon: FaUser,
-      title: "Total Users",
-      total: userLoading ? "Loading.." : users?.length || 0,
+      title: "Total Usuarios",
+      total: userLoading ? "Cargando.." : users?.length || 0,
     },
   ];
   return (

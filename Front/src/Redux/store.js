@@ -10,21 +10,21 @@ import * as movies from "./Reducers/MoviesReducer";
 const rootReducer = combineReducers({
     //reducer del usuario
     userLogin: User.userLoginReducer,
-    userRegister: User.userRegisterReducer, 
-    userUpdateProfile : User.userUpdateProfileReducer,
-    userDeleteProfile : User.userDeleteProfileReducer,
-    userchangepassword : User.userChangePasswordReducer, 
-    userGetFavoriteMovies : User.userGetFavoriteMoviesReducer, 
-    userDeleteFavoriteMovies : User.userDeleteFavoriteMoviesReducer,
-    adminGetAllUsers : User.adminGetAllUsersReducer, 
-    adminDeleteUser : User.adminDeleteUserReducer,
+    userRegister: User.userRegisterReducer,
+    userUpdateProfile: User.userUpdateProfileReducer,
+    userDeleteProfile: User.userDeleteProfileReducer,
+    userchangepassword: User.userChangePasswordReducer,
+    userGetFavoriteMovies: User.userGetFavoriteMoviesReducer,
+    userDeleteFavoriteMovies: User.userDeleteFavoriteMoviesReducer,
+    adminGetAllUsers: User.adminGetAllUsersReducer,
+    adminDeleteUser: User.adminDeleteUserReducer,
     userLikeMovie: User.userLikeMovieReducer,
 
     // reducers de categorias
-    categoryGetAll : categories.getAllCategoriesReducer, 
-    categoryCreate : categories.createCategoryReducer,
-    categoryUpdate : categories.updateCategoryReducer, 
-    categoryDelete : categories.deleteCategoryReducer, 
+    categoryGetAll: categories.getAllCategoriesReducer,
+    categoryCreate: categories.createCategoryReducer,
+    categoryUpdate: categories.updateCategoryReducer,
+    categoryDelete: categories.deleteCategoryReducer,
 
     // reducers para las peliculas
     getAllMovies: movies.moviesListReducer,
@@ -32,8 +32,11 @@ const rootReducer = combineReducers({
     getMovieById: movies.movieDetailsReducer,
     getTopRatedMovie: movies.movieTopRatedReducer,
     createReview: movies.createReviewReducer,
-    deleteMovie : movies.deleteMovieReducer, 
-    deleteAllMovies : movies.deleteAllMoviesReducer, 
+    deleteMovie: movies.deleteMovieReducer,
+    deleteAllMovies: movies.deleteAllMoviesReducer,
+    createMovie: movies.createMovieReducer,
+    casts: movies.CastsReducer,
+    updateMovie: movies.updateMovieReducer,
 });
 
 // get userinfo del local storage
