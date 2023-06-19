@@ -36,19 +36,19 @@ function MenuDrawer({ drawerOpen, toggleDrawer }) {
   const LinkDatas = [
     {
       icon: FaFacebook,
-      link: "https://www.facebook.com/zpunet",
+      link: "https://www.facebook.com",
     },
     {
       icon: FaMedium,
-      link: "https://medium.com/@irenemmassyy",
+      link: "https://medium.com/",
     },
     {
       icon: FaTelegram,
-      link: "https://t.me/zpunet",
+      link: "https://t.me",
     },
     {
       icon: FaYoutube,
-      link: "https://www.youtube.com/channel/UCOYwYO-LEsrjqBs6xXSfq1w",
+      link: "https://www.youtube.com",
     },
   ];
 

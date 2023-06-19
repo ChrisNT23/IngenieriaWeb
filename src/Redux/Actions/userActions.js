@@ -3,6 +3,7 @@ import * as userApi from "../APIs/userServices";
 import toast from "react-hot-toast";
 import { ErrorsAction, tokenProtection } from "../Protection";
 
+
 // login action
 const loginAction = (datas) => async (dispatch) => {
     try {
@@ -91,7 +92,7 @@ const changePasswordAction = (passwords) => async (dispatch, getState) => {
     }
 };
 
-// obtenemos todas las peliculas accion
+// obtenemos todas las peliculas 
 const getFavoriteMoviesAction = () => async (dispatch, getState) => {
     try {
         dispatch({ type: userConstants.GET_FAVORITE_MOVIES_REQUEST });
@@ -106,7 +107,6 @@ const getFavoriteMoviesAction = () => async (dispatch, getState) => {
         ErrorsAction(error, dispatch, userConstants.GET_FAVORITE_MOVIES_FAIL);
     }
 };
-
 
 // eliminar todas las peliculas favoritas
 
@@ -179,8 +179,6 @@ const likeMovieAction = (movieId) => async (dispatch, getState) => {
     }
   };
 
-
-
   //Exportamos los metodos que se realizaron arriba
 export {
     loginAction,
@@ -194,4 +192,5 @@ export {
     getAllUsersAction, 
     deleteUserAction,
     likeMovieAction, 
+   
 };

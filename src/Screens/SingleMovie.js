@@ -13,6 +13,8 @@ import ShareMovieModal from "../Components/Modals/ShareModal";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../Components/Notifications/Loader";
 import { RiMovie2Line } from "react-icons/ri";
+import { getFavoriteMoviesAction } from "../Redux/Actions/userActions";
+import { IfMovieLiked } from "../Context/Functionalities";
 
 function SingleMovie() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -20,64 +22,88 @@ function SingleMovie() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const sameClass = "w-full gap-6 flex-colo min-h-screen";
-  // use Selector
   const { isLoading, isError, movie } = useSelector(
     (state) => state.getMovieById
   );
-  const { movies } = useSelector((state) => state.getAllMovies);
-  // related movies
-  const RelatedMovies = movies?.filter((m) => m.category === movie?.category);
+  const { movies, userGetFavoriteMovies } = useSelector((state) => ({
+    movies: state.getAllMovies.movies,
+    userGetFavoriteMovies: state.userGetFavoriteMovies.likedMovies,
+  }));
 
-  // use Effect
+  // Get the user's liked movie IDs
+  //Obtenemos los ID de las peliculas likeadas del usuario
+  // usamos map para sacar de todas las peliculas las favoritas
+  const likedMovieIds = userGetFavoriteMovies.map((movie) => movie._id);
+  // Verificamos is la pelicula fue dada like
+  const isMovieLiked = IfMovieLiked(movie);
+
+  // Obtenemos las peliculas relacionadas basadas en la categoria de 
+  // la pelicula likeada
+  let relatedCategory = "";
+  if (isMovieLiked) {
+    if (movie.category === "Accion") {
+      relatedCategory = "Ciencia Ficción";
+    } else if (movie.category === "Crimen") {
+      relatedCategory = "Suspenso";
+    } else if (movie.category === "Thriller") {
+      relatedCategory = "Horror";
+    // Mas condiciones para más pelçiulas
+  }};
+
+  // Filtramos las peliculas relacionadas basandonos en la categoria y 
+  // las peliculas con status de Likedmovies
+  const RelatedMovies = movies?.filter(
+    (m) =>
+      m.category === relatedCategory &&
+      !likedMovieIds.includes(m._id) &&
+      m._id !== id
+  );
+
+  
+  // useEffect
   useEffect(() => {
-    //  movie id
     dispatch(getMovieByIdAction(id));
   }, [dispatch, id]);
 
-  console.log(id);
   return (
     <Layout>
-      {
-        isLoading ? (<div className={sameClass}>
+      {isLoading ? (
+        <div className={sameClass}>
           <Loader />
         </div>
-        ) :
-          isError ? (<div className={sameClass}>
-
-            <div className="flex-colo w-24 h-24 p-5 mb-4 rounded-full bg-dry text-subMain text-4xl">
-              <RiMovie2Line />
-            </div>
-            <p className="text-border text-sm">
-              Algo Salió Mal
-            </p>
+      ) : isError ? (
+        <div className={sameClass}>
+          <div className="flex-colo w-24 h-24 p-5 mb-4 rounded-full bg-dry text-subMain text-4xl">
+            <RiMovie2Line />
           </div>
-          ) : (
-            <>
-              <ShareMovieModal
-                modalOpen={modalOpen}
-                setModalOpen={setModalOpen}
-                movie={movie}
-              />
-              <MovieInfo movie={movie} setModalOpen={setModalOpen} />
-              <div className="container mx-auto min-h-screen px-2 my-6">
-                <MovieCasts movie={movie} />
-                {/* rate */}
-                <MovieRates movie={movie} />
-                {/* related */}
-                {
-                  RelatedMovies?.length > 0 && (<div className="my-16">
-                    <Titles title="Películas Relacionadas" Icon={BsCollectionFill} />
-                    <div className="grid sm:mt-10 mt-6 xl:grid-cols-4 2xl:grid-cols-5 lg:grid-cols-3 sm:grid-cols-2 gap-6">
-                      {RelatedMovies?.map((movie, index) => (
-                        <Movie key={movie?._id} movie={movie} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-
+          <p className="text-border text-sm">Algo Salió Mal</p>
+        </div>
+      ) : (
+        <>
+          <ShareMovieModal
+            modalOpen={modalOpen}
+            setModalOpen={setModalOpen}
+            movie={movie}
+          />
+          <MovieInfo movie={movie} setModalOpen={setModalOpen} />
+          <div className="container mx-auto min-h-screen px-2 my-6">
+            <MovieCasts movie={movie} />
+            {/* rate */}
+            <MovieRates movie={movie} />
+            {/* related */}
+            {isMovieLiked && relatedCategory && RelatedMovies?.length > 0 && (
+              <div className="my-16">
+                <Titles title="Películas Relacionadas" Icon={BsCollectionFill} />
+                <div className="grid sm:mt-10 mt-6 xl:grid-cols-4 2xl:grid-cols-5 lg:grid-cols-3 sm:grid-cols-2 gap-6">
+                  {RelatedMovies.map((movie) => (
+                    <Movie key={movie?._id} movie={movie} />
+                  ))}
+                </div>
               </div>
-            </>
-          )}
+            )}
+          </div>
+        </>
+      )}
     </Layout>
   );
 }
